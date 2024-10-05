@@ -1,0 +1,122 @@
+[gd_scene load_steps=12 format=3 uid="uid://cwvs4ntj6svwc"]
+
+[ext_resource type="Script" path="res://Scripts/Levels/Level.cs" id="1_3x88l"]
+[ext_resource type="PackedScene" uid="uid://c4rf14eawmjl6" path="res://Scenes/PLayer/Player.tscn" id="1_nj040"]
+[ext_resource type="PackedScene" uid="uid://ca2h1d8yhc7kb" path="res://Scenes/Enemies/GreenEnemy.tscn" id="2_my5ic"]
+[ext_resource type="Texture2D" uid="uid://cc6mwwj1mwyld" path="res://Assets/Bg/space.png" id="3_fk1jy"]
+[ext_resource type="Texture2D" uid="uid://cww2hvdwydoir" path="res://Assets/Bg/far_stars.png" id="4_nrqvf"]
+[ext_resource type="Script" path="res://Scripts/Enemies/SpawnEnemies.cs" id="5_d7m2q"]
+[ext_resource type="Texture2D" uid="uid://dbj0y5jhp6oib" path="res://Assets/Bg/close_stars.png" id="5_evov0"]
+[ext_resource type="PackedScene" uid="uid://4gtuyn02jvf3" path="res://Scenes/Enemies/YellowEnemy .tscn" id="5_hpm7n"]
+[ext_resource type="PackedScene" uid="uid://fpy3w4fr3pfp" path="res://Scenes/Enemies/PinkEnemy.tscn" id="5_q0p4f"]
+[ext_resource type="AudioStream" uid="uid://b4jqupx00gme4" path="res://Assets/Sounds/music.ogg" id="9_c13vd"]
+[ext_resource type="Script" path="res://Scripts/Levels/Hud.cs" id="11_l6g40"]
+
+[node name="Level" type="Node2D" node_paths=PackedStringArray("spawn", "player", "hud")]
+script = ExtResource("1_3x88l")
+spawn = NodePath("SpawnEnemies")
+player = NodePath("Player")
+hud = NodePath("Hud")
+
+[node name="Player" parent="." instance=ExtResource("1_nj040")]
+position = Vector2(128, 340)
+
+[node name="Bg" type="Node2D" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="Bg"]
+scroll_scale = Vector2(0.4, 0.4)
+repeat_size = Vector2(128, 128)
+autoscroll = Vector2(0, 3)
+
+[node name="Sprite2D" type="Sprite2D" parent="Bg/Parallax2D"]
+z_index = -1
+texture = ExtResource("3_fk1jy")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Bg/Parallax2D"]
+z_index = -1
+position = Vector2(0, 256)
+texture = ExtResource("3_fk1jy")
+centered = false
+
+[node name="Parallax2D2" type="Parallax2D" parent="Bg"]
+scroll_scale = Vector2(0.6, 0.6)
+repeat_size = Vector2(128, 128)
+autoscroll = Vector2(0, 6)
+
+[node name="Sprite2D" type="Sprite2D" parent="Bg/Parallax2D2"]
+z_index = -1
+texture = ExtResource("4_nrqvf")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Bg/Parallax2D2"]
+z_index = -1
+position = Vector2(0, 256)
+texture = ExtResource("4_nrqvf")
+centered = false
+
+[node name="Parallax2D3" type="Parallax2D" parent="Bg"]
+scroll_scale = Vector2(0.9, 0.9)
+repeat_size = Vector2(128, 128)
+autoscroll = Vector2(0, 12)
+
+[node name="Sprite2D" type="Sprite2D" parent="Bg/Parallax2D3"]
+z_index = -1
+texture = ExtResource("5_evov0")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Bg/Parallax2D3"]
+z_index = -1
+position = Vector2(0, 256)
+texture = ExtResource("5_evov0")
+centered = false
+
+[node name="SpawnEnemies" type="Node2D" parent="." node_paths=PackedStringArray("spawnTimer")]
+script = ExtResource("5_d7m2q")
+enemyScene = Array[PackedScene]([ExtResource("2_my5ic"), ExtResource("5_hpm7n"), ExtResource("5_q0p4f")])
+spawnTimer = NodePath("SpawnTimer")
+
+[node name="SpawnTimer" type="Timer" parent="SpawnEnemies"]
+wait_time = 2.0
+autostart = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_c13vd")
+volume_db = -19.5
+
+[node name="Hud" type="Control" parent="." node_paths=PackedStringArray("scoreLabel", "replayButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_l6g40")
+scoreLabel = NodePath("MarginContainer/Score")
+replayButton = NodePath("CenterContainer/Button")
+
+[node name="CenterContainer" type="CenterContainer" parent="Hud"]
+layout_mode = 1
+offset_left = 56.0
+offset_top = 176.0
+offset_right = 221.0
+offset_bottom = 230.0
+
+[node name="Button" type="Button" parent="Hud/CenterContainer"]
+visible = false
+layout_mode = 2
+text = "Pressez Espace pour
+rejouer"
+
+[node name="MarginContainer" type="MarginContainer" parent="Hud"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+
+[node name="Score" type="Label" parent="Hud/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Score : "
+vertical_alignment = 1

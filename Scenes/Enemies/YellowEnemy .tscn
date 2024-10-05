@@ -1,0 +1,108 @@
+[gd_scene load_steps=15 format=3 uid="uid://4gtuyn02jvf3"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/Enemy.cs" id="1_26el6"]
+[ext_resource type="Texture2D" uid="uid://dl45tnc6blkr2" path="res://Assets/Vfx/explosion.png" id="2_7l0km"]
+[ext_resource type="Texture2D" uid="uid://dgv1x2pavlmhc" path="res://Assets/Actors/Enemies/yellow_enemy.png" id="3_sgxrl"]
+[ext_resource type="AudioStream" uid="uid://cvcar3yt05o4u" path="res://Assets/Sounds/explosion_sound.wav" id="4_cdlcf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3aie"]
+atlas = ExtResource("2_7l0km")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pvol"]
+atlas = ExtResource("2_7l0km")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31wbm"]
+atlas = ExtResource("2_7l0km")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kyb6w"]
+atlas = ExtResource("2_7l0km")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2udq"]
+atlas = ExtResource("2_7l0km")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sb1ow"]
+atlas = ExtResource("3_sgxrl")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ev4sa"]
+atlas = ExtResource("3_sgxrl")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gi2yf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w3aie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6pvol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31wbm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kyb6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o2udq")
+}],
+"loop": false,
+"name": &"Explode",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sb1ow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ev4sa")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5gqjd"]
+size = Vector2(20, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2daep"]
+size = Vector2(28, 3)
+
+[node name="YellowEnemy" type="CharacterBody2D" node_paths=PackedStringArray("animatedSprite", "hitBox", "explodeSound", "visibleOnScreenNotifier")]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_26el6")
+animatedSprite = NodePath("AnimatedSprite2D")
+hitBox = NodePath("HitBox")
+explodeSound = NodePath("ExplodetSound")
+visibleOnScreenNotifier = NodePath("VisibleOnScreenNotifier2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.8, 1.8)
+sprite_frames = SubResource("SpriteFrames_gi2yf")
+autoplay = "default"
+frame_progress = 0.630361
+
+[node name="HurtBox" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_5gqjd")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, 12.5)
+shape = SubResource("RectangleShape2D_2daep")
+
+[node name="ExplodetSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_cdlcf")
+volume_db = -4.0
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -21.5)
+scale = Vector2(1, 0.35)

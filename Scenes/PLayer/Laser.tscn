@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvstad4duy6pi"]
+
+[ext_resource type="Texture2D" uid="uid://bkwt7ceuw7k7w" path="res://Assets/Vfx/laser_big.png" id="1_s6mn6"]
+[ext_resource type="Script" path="res://Scripts/Player/Laser.cs" id="1_v7p36"]
+[ext_resource type="Texture2D" uid="uid://c60j1o8vedfwi" path="res://Assets/Vfx/laser_small.png" id="2_3i1sb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sm5rm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_s6mn6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_3i1sb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gp0jh"]
+size = Vector2(4, 10.5)
+
+[node name="Laser" type="Area2D" node_paths=PackedStringArray("visibleOnScreenNotifier2D")]
+scale = Vector2(1, 2)
+collision_mask = 2
+script = ExtResource("1_v7p36")
+visibleOnScreenNotifier2D = NodePath("VisibleOnScreenNotifier2D")
+speed = 300.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_sm5rm")
+frame = 1
+frame_progress = 0.624207
+offset = Vector2(0, -5.155)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.25)
+shape = SubResource("RectangleShape2D_gp0jh")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, 0.5)
+scale = Vector2(0.2, 0.05)
